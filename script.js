@@ -3,12 +3,12 @@ let activeSquare = null;
 
 // Utwórz tablicę 2D do śledzenia indeksów kwadratów
 const squares = [];
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 5; i++) {
   squares[i] = [];
-  for (let j = 0; j < 3; j++) {
+  for (let j = 0; j < 5; j++) {
     const square = document.createElement('div');
     square.classList.add('square');
-    square.textContent = i * 3 + j + 1;
+    square.textContent = i * 5 + j + 1;
 
     square.addEventListener('click', () => {
       setActiveSquare(square);
@@ -75,5 +75,5 @@ function moveIndex(index, rowOffset, colOffset) {
 
 // Funkcja sprawdzająca, czy nowy indeks jest poprawny
 function isValidIndex(index) {
-  return index.row >= 0 && index.row < 3 && index.col >= 0 && index.col < 3;
+  return index.row >= 0 && index.row < 5 && index.col >= 0 && index.col < 5;
 }
