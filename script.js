@@ -1,38 +1,65 @@
 const gridElement = document.getElementById('grid');
-let activeSquare = null;
+let heroSquare = null;
+let heroValue = 100;
 
 // Utwórz tablicę 2D do śledzenia indeksów kwadratów
 const squares = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 3; i++) {
   squares[i] = [];
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < 3; j++) {
     const square = document.createElement('div');
     square.classList.add('square');
-    square.textContent = i * 5 + j + 1;
+
+    const value = i === 1 && j === 1 ? heroValue : getRandomInt(-10, 11);
+    square.textContent = value;
 
     square.addEventListener('click', () => {
-      setActiveSquare(square);
+      moveHero(square);
     });
 
     gridElement.appendChild(square);
     squares[i][j] = square;
+
+    if (value === heroValue) {
+      heroSquare = square;
+      heroSquare.classList.add('hero');
+    }
   }
 }
 
-// Funkcja ustawiająca aktywny kwadrat
-function setActiveSquare(square) {
-  if (activeSquare) {
-    activeSquare.classList.remove('active');
-  }
+// Funkcja do uzyskania losowej liczby całkowitej z zakresu
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  activeSquare = square;
-  activeSquare.classList.add('active');
+// Funkcja do przesuwania bohatera
+function moveHero(targetSquare) {
+  const targetValue = parseInt(targetSquare.textContent);
+
+  // Zaktualizuj wartość bohatera
+  heroValue += targetValue;
+
+  // Zaktualizuj kwadrat bohatera
+  heroSquare.classList.remove('hero');
+  heroSquare.textContent = heroValue;
+
+  // Zaktualizuj wartość pola docelowego
+  targetSquare.textContent = heroValue;
+
+  // Zaktualizuj wartość pola, na którym wcześniej stał bohater
+  const previousSquare = heroSquare;
+  const previousValue = getRandomInt(-10, 11);
+  previousSquare.textContent = previousValue;
+
+  // Przypisz nowy kwadrat bohatera
+  heroSquare = targetSquare;
+  heroSquare.classList.add('hero');
 }
 
 // Obsługa strzałek
 document.addEventListener('keydown', (event) => {
-  if (activeSquare) {
-    const currentIndex = getIndex(activeSquare);
+  if (heroSquare) {
+    const currentIndex = getIndex(heroSquare);
 
     let newIndex;
     switch (event.key) {
@@ -48,24 +75,14 @@ document.addEventListener('keydown', (event) => {
       case 'ArrowRight':
         newIndex = moveIndex(currentIndex, 0, 1);
         break;
-      case 'w':
-        newIndex = moveIndex(currentIndex, -1, 0);
-        break;
-      case 's':
-        newIndex = moveIndex(currentIndex, 1, 0);
-        break;
-      case 'a':
-        newIndex = moveIndex(currentIndex, 0, -1);
-        break;
-      case 'd':
-        newIndex = moveIndex(currentIndex, 0, 1);
-        break;
       default:
         return;
     }
 
-    if (isValidIndex(newIndex)) {
-      setActiveSquare(squares[newIndex.row][newIndex.col]);
+    const targetSquare = squares[newIndex.row] && squares[newIndex.row][newIndex.col];
+
+    if (targetSquare) {
+      moveHero(targetSquare);
     }
   }
 });
@@ -83,9 +100,4 @@ function getIndex(square) {
 // Funkcja do przesuwania indeksu
 function moveIndex(index, rowOffset, colOffset) {
   return { row: index.row + rowOffset, col: index.col + colOffset };
-}
-
-// Funkcja sprawdzająca, czy nowy indeks jest poprawny
-function isValidIndex(index) {
-  return index.row >= 0 && index.row < 5 && index.col >= 0 && index.col < 5;
 }
