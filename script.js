@@ -48,6 +48,18 @@ document.addEventListener('keydown', (event) => {
       case 'ArrowRight':
         newIndex = moveIndex(currentIndex, 0, 1);
         break;
+      case 'w':
+        newIndex = moveIndex(currentIndex, -1, 0);
+        break;
+      case 's':
+        newIndex = moveIndex(currentIndex, 1, 0);
+        break;
+      case 'a':
+        newIndex = moveIndex(currentIndex, 0, -1);
+        break;
+      case 'd':
+        newIndex = moveIndex(currentIndex, 0, 1);
+        break;
       default:
         return;
     }
