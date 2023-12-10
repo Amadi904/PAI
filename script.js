@@ -1,112 +1,170 @@
-const gridElement = document.getElementById('grid');
-let heroSquare = null;
-let heroHealth = 50;
-let heroAttack = 10;
+// Pobieramy Grid z style.css
+const grid = document.getElementById('grid');
+const cells = [];
 
-// Utwórz tablicę 2D do śledzenia indeksów kwadratów
-const squares = [];
-for (let i = 0; i < 3; i++) {
-  squares[i] = [];
-  for (let j = 0; j < 3; j++) {
-    const square = document.createElement('div');
-    square.classList.add('square');
 
-    let value, textColor;
 
-    if (i === 1 && j === 1) {
-      value = `Health: ${heroHealth}\nAttack: ${heroAttack}`;
-      textColor = '#e74c3c'; // Kolor czerwony dla bohatera
-      heroSquare = square;
-      heroSquare.classList.add('hero');
+// Funkcja generująca wartość dla komórki na podstawie wartości początkowych
+function generateCellValue(hp, dmg, money) {
+  return `${hp}-${dmg}-${money}`;
+}
+
+
+
+// Inicjalizacja wartości początkowych
+let maxHP = 20;
+let initialHP = 20;
+let initialDMG = 10;
+let initialMoney = 0;
+let steps = 0;
+let oblicz = 0;
+let armor = 0;
+
+
+
+// Tworzenie siatki komórek z wartościami początkowymi
+for (let i = 0; i < 5; i++) {
+  for (let j = 0; j < 5; j++) { 
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+
+    // Ustawienie wartości początkowych dla zaznaczonego pola (indeks 0,0)
+    if (i === 2 && j === 2) {
+      cell.textContent = generateCellValue(initialHP, initialDMG, initialMoney);
+      cell.classList.add('highlighted');
     } else {
-      const healthValue = getRandomInt(0, 5);
-      const attackValue = getRandomInt(0, 5);
-      value = `Health: ${healthValue}\nAttack: ${attackValue}`;
-      textColor = '#333'; // Kolor standardowy dla innych kwadratów
-
-      square.addEventListener('click', () => {
-        moveHero(square, healthValue, attackValue);
-      });
+      cell.textContent = generateCellValue(
+        Math.floor(Math.random() * 15 + 1),
+        Math.floor(Math.random() * 15 + 1),
+        Math.floor(Math.random() * 5 + 1)
+      );
     }
-
-    square.textContent = value;
-    square.style.color = textColor;
-
-    gridElement.appendChild(square);
-    squares[i][j] = square;
+    grid.appendChild(cell);
+    cells.push(cell);
   }
 }
+let currentCellIndex = 12; // Inicjalizacja zmiennej przechowującej indeks bieżącej komórki na siatce
 
-// Funkcja do uzyskania losowej liczby całkowitej z zakresu
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
-// Funkcja do uzyskania indeksu kwadratu w tablicy
-function getIndex(square) {
-  for (let i = 0; i < squares.length; i++) {
-    const j = squares[i].indexOf(square);
-    if (j !== -1) {
-      return { row: i, col: j };
+
+// Zmiana watości Życia i Ataku gdy mało komórka specjalna jest
+function checkStats() {
+  cells.forEach((cell, index) => {
+    // Sprawdzenie, czy komórka nie ma klasy "highlighted"
+    if (!cell.classList.contains('highlighted')) {
+      const cellValues = cell.textContent.split('-');
+      let cellHP = parseInt(cellValues[0]);
+      let cellDMG = parseInt(cellValues[1]);
+      let cellMoney = parseInt(cellValues[2]);
+
+      if (cellMoney <= 2) {
+        cellDMG = 0;
+        cellHP = 0;
+        cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
+      }
     }
-  }
+  });
 }
+checkStats();
 
-// Funkcja do przesuwania indeksu
-function moveIndex(index, rowOffset, colOffset) {
-  return { row: index.row + rowOffset, col: index.col + colOffset };
-}
 
-// Funkcja do przesuwania bohatera
-function moveHero(targetSquare, healthValue, attackValue) {
-  const targetHealth = parseInt(targetSquare.textContent.split('\n')[0].split(' ')[1]);
-  const targetAttack = parseInt(targetSquare.textContent.split('\n')[1].split(' ')[1]);
 
-  // Odejmij wartość ataku od zdrowia bohatera
-  heroHealth -= targetAttack;
 
-  // Przypisz nowe wartości zdrowia i ataku na polu docelowym
-  targetSquare.textContent = `Health: ${targetHealth - heroAttack}\nAttack: ${attackValue}`;
 
-  // Przypisz nowe wartości zdrowia i ataku na polu, na którym aktualnie znajduje się bohater
-  const heroSquareHealth = getRandomInt(0, 5);
-  const heroSquareAttack = getRandomInt(0, 5);
-  heroSquare.textContent = `Health: ${heroSquareHealth}\nAttack: ${heroSquareAttack}`;
 
-  // Przypisz nowy kwadrat bohatera
-  heroSquare.classList.remove('hero'); // Usuń klasę "hero" z poprzedniego kwadratu
-  heroSquare = targetSquare;
-  heroSquare.textContent = `Health: ${heroHealth}\nAttack: ${heroAttack}`;
-  heroSquare.classList.add('hero'); // Dodaj klasę "hero" do nowego kwadratu
-}
 
-// Obsługa strzałek
+// Nasłuchiwanie na zdarzenie naciśnięcia klawisza
 document.addEventListener('keydown', (event) => {
-  if (heroSquare) {
-    const currentIndex = getIndex(heroSquare);
 
-    let newIndex;
-    switch (event.key) {
-      case 'ArrowUp':
-        newIndex = moveIndex(currentIndex, -1, 0);
-        break;
-      case 'ArrowDown':
-        newIndex = moveIndex(currentIndex, 1, 0);
-        break;
-      case 'ArrowLeft':
-        newIndex = moveIndex(currentIndex, 0, -1);
-        break;
-      case 'ArrowRight':
-        newIndex = moveIndex(currentIndex, 0, 1);
-        break;
-      default:
-        return;
-    }
+  // Pobranie wartości z komórki "highlighted" i zapisanie ich w zmiennych
+  const highlightedValues = cells[currentCellIndex].textContent.split('-');
+  let highlightedHP = parseInt(highlightedValues[0]);
+  let highlightedDMG = parseInt(highlightedValues[1]);
+  let highlightedMoney = parseInt(highlightedValues[2]);
 
-    const targetSquare = squares[newIndex.row] && squares[newIndex.row][newIndex.col];
+  console.log('Wartości z komórki highlighted:', highlightedHP, highlightedDMG, highlightedMoney);
 
-    if (targetSquare) {
-      moveHero(targetSquare);
-    }
+  // To zmioenia poprzednio okupowaną komórke na losową
+  cells[currentCellIndex].textContent = generateCellValue(
+    Math.floor(Math.random() * 15 + 1),
+    Math.floor(Math.random() * 15 + 1),
+    Math.floor(Math.random() * 5 + 1)
+  );
+  cells[currentCellIndex].classList.remove('highlighted'); // Usunięcie klasy 'highlighted' z poprzedniej komórki
+  checkStats();
+
+  
+  // Warunki obsługujące ruch po siatce w zależności od naciśniętego klawisza
+  if (event.key === 'a' && currentCellIndex % 5 !== 0) {
+    currentCellIndex -= 1,
+    steps += 1,
+    oblicz += 1;
+  } else if (event.key === 'w' && currentCellIndex >= 5) {
+    currentCellIndex -= 5,
+    steps += 1,
+    oblicz += 1;
+  } else if (event.key === 'd' && currentCellIndex % 5 !== 4) {
+    currentCellIndex += 1,
+    steps += 1,
+    oblicz += 1;
+  } else if (event.key === 's' && currentCellIndex < 20) {
+    currentCellIndex += 5,
+    steps += 1,
+    oblicz += 1;
   }
+
+  console.log('Liczba kroków: ' + steps)
+  console.log('Oblicz? ' + oblicz)
+
+  
+
+// Operacja na wartościach wewnątrz komórek
+let currentCellValues = cells[currentCellIndex].textContent.split('-');
+let currentHP = parseInt(currentCellValues[0]);
+let currentDMG = parseInt(currentCellValues[1]);
+let currentMoney = parseInt(currentCellValues[2]);
+
+  // Tu Można dodawac dowolne efekty z unikalnych kart 
+if (oblicz>=1) {
+  if (currentMoney==1){
+    highlightedHP +=1;
+  }
+else if (currentMoney==2){
+  highlightedHP +=2;
+}
+
+// Tu jak to przeciwnik a nie specjalna karta
+else{
+  currentHP -= highlightedDMG
+  if (currentHP > 0 ) {
+    let edycjaObrażeń = (currentDMG-=armor);
+    if (edycjaObrażeń>1){
+      highlightedHP -= edycjaObrażeń;
+    }
+    else {
+      highlightedHP -=1;
+    } 
+  } 
+  
+
+  highlightedMoney += currentMoney;
+  }
+  oblicz = 0;
+}
+
+if (highlightedHP > maxHP) {
+  highlightedHP = maxHP;
+}
+
+
+
+cells[currentCellIndex].classList.add('highlighted'); // Dodanie klasy 'highlighted' do aktualnej komórki
+cells[currentCellIndex].textContent = generateCellValue(highlightedHP, highlightedDMG, highlightedMoney);
+
+
+
+
+
+
+
 });
