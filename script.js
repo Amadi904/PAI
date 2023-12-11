@@ -1,4 +1,4 @@
-// Pobieramy Grid z style.css
+// Pobieramy Grid z style.css  
 const grid = document.getElementById('grid');
 const cells = [];
 
