@@ -57,6 +57,9 @@ function checkStats() {
       let cellDMG = parseInt(cellValues[1]);
       let cellMoney = parseInt(cellValues[2]);
 
+
+
+      // WAŻNE ----------------- WAŻNE - To pozwala manipulować wartościami HP-ATAK-MONEY istniejących komórek zależnie od czegokolwiek
       if (cellMoney <= 2) {
         cellDMG = 0;
         cellHP = 0;
@@ -66,10 +69,6 @@ function checkStats() {
   });
 }
 checkStats();
-
-
-
-
 
 
 
@@ -124,7 +123,9 @@ let currentHP = parseInt(currentCellValues[0]);
 let currentDMG = parseInt(currentCellValues[1]);
 let currentMoney = parseInt(currentCellValues[2]);
 
-  // Tu Można dodawac dowolne efekty z unikalnych kart 
+
+
+// Tu Można dodawac dowolne efekty z unikalnych kart ----------------------------------------------------------------------------------
 if (oblicz>=1) {
   if (currentMoney==1){
     highlightedHP +=1;
@@ -132,6 +133,8 @@ if (oblicz>=1) {
 else if (currentMoney==2){
   highlightedHP +=2;
 }
+
+
 
 // Tu jak to przeciwnik a nie specjalna karta
 else{
@@ -152,19 +155,17 @@ else{
   oblicz = 0;
 }
 
+// Ogranicza życie do max jak przekroczysz
 if (highlightedHP > maxHP) {
   highlightedHP = maxHP;
 }
 
 
 
+
+
+
+// To cuś robi że updatuje ci obecną komórkę na gracza i pokazuje jego wynik
 cells[currentCellIndex].classList.add('highlighted'); // Dodanie klasy 'highlighted' do aktualnej komórki
 cells[currentCellIndex].textContent = generateCellValue(highlightedHP, highlightedDMG, highlightedMoney);
-
-
-
-
-
-
-
 });
