@@ -92,7 +92,7 @@ checkStats();
 
 // Nasłuchiwanie na zdarzenie naciśnięcia klawisza
 document.addEventListener('keydown', (event) => {
-  
+
   // Pobranie wartości z komórki "highlighted" i zapisanie ich w zmiennych
   const highlightedValues = cells[currentCellIndex].textContent.split('-');
   let highlightedHP = parseInt(highlightedValues[0]);
@@ -108,27 +108,32 @@ document.addEventListener('keydown', (event) => {
     Math.floor(Math.random() * 5 + 1)
   );
   cells[currentCellIndex].classList.remove('highlighted'); // Usunięcie klasy 'highlighted' z poprzedniej komórki
+  checkStats();
+
+  
 
   // Warunki obsługujące ruch po siatce w zależności od naciśniętego klawisza
-  if (event.key === 'a' && currentCellIndex % 5 !== 0) {
+  if (
+    (event.key === 'a' || event.key === 'ArrowLeft') && currentCellIndex % 5 !== 0) {
     currentCellIndex -= 1,
     steps += 1,
     oblicz += 1;
-  } else if (event.key === 'w' && currentCellIndex >= 5) {
+  } else if ((event.key === 'w' || event.key === 'ArrowUp') && currentCellIndex >= 5) {
     currentCellIndex -= 5,
     steps += 1,
     oblicz += 1;
-  } else if (event.key === 'd' && currentCellIndex % 5 !== 4) {
+  } else if ((event.key === 'd'  || event.key==='ArrowRight') && currentCellIndex % 5 !== 4) {
     currentCellIndex += 1,
     steps += 1,
     oblicz += 1;
-  } else if (event.key === 's' && currentCellIndex < 20) {
+  } else if ((event.key === 's' || event.key==='ArrowDown')  && currentCellIndex < 20) {
     currentCellIndex += 5,
     steps += 1,
     oblicz += 1;
   }
   console.log('Liczba kroków: ' + steps)
   console.log('Oblicz? ' + oblicz)
+
   
 
 // Operacja na wartościach wewnątrz komórek
@@ -136,6 +141,7 @@ let currentCellValues = cells[currentCellIndex].textContent.split('-');
 let currentHP = parseInt(currentCellValues[0]);
 let currentDMG = parseInt(currentCellValues[1]);
 let currentMoney = parseInt(currentCellValues[2]);
+
 
 
 // Tu Można dodawac dowolne efekty z unikalnych kart ----------------------------------------------------------------------------------
@@ -168,7 +174,6 @@ else{
   oblicz = 0;
 }
 
-
 // Ogranicza życie do max jak przekroczysz
 if (highlightedHP > maxHP) {
   highlightedHP = maxHP;
@@ -176,9 +181,13 @@ if (highlightedHP > maxHP) {
 
 
 
+
+
+
 // To cuś robi że updatuje ci obecną komórkę na gracza i pokazuje jego wynik
 cells[currentCellIndex].classList.add('highlighted'); // Dodanie klasy 'highlighted' do aktualnej komórki
 cells[currentCellIndex].textContent = generateCellValue(highlightedHP, highlightedDMG, highlightedMoney);
+
 
 localStorage.setItem('highlightedMoney', highlightedMoney);
 console.log('Zapisano wartość do Local Storage:', highlightedMoney); // <-- sprawdza czy zapisano w pamieci ilosc aktualnych monet
