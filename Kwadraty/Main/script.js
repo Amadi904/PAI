@@ -1,3 +1,21 @@
+//Wyświetlanie w kosoli jaki obrazek został wybrany początkowy
+document.addEventListener('DOMContentLoaded', function() {
+  // Pobierz zmienną z localStorage
+  const ostatniWybranyObrazek = localStorage.getItem('ostatniWybranyObrazek');
+  
+  // Sprawdź, czy zmienna istnieje i wyświetl w konsoli
+  if (ostatniWybranyObrazek !== null) {
+    console.log('Ostatni wybrany obrazek:', ostatniWybranyObrazek);
+  } else {
+    console.log('Nie wybrano jeszcze obrazka.');
+  }
+});
+
+
+
+
+
+
 // Pobieramy Grid z style.css
 const grid = document.getElementById('grid');
 const cells = [];
@@ -74,7 +92,7 @@ checkStats();
 
 // Nasłuchiwanie na zdarzenie naciśnięcia klawisza
 document.addEventListener('keydown', (event) => {
-
+  
   // Pobranie wartości z komórki "highlighted" i zapisanie ich w zmiennych
   const highlightedValues = cells[currentCellIndex].textContent.split('-');
   let highlightedHP = parseInt(highlightedValues[0]);
@@ -90,9 +108,7 @@ document.addEventListener('keydown', (event) => {
     Math.floor(Math.random() * 5 + 1)
   );
   cells[currentCellIndex].classList.remove('highlighted'); // Usunięcie klasy 'highlighted' z poprzedniej komórki
-  checkStats();
 
-  
   // Warunki obsługujące ruch po siatce w zależności od naciśniętego klawisza
   if (event.key === 'a' && currentCellIndex % 5 !== 0) {
     currentCellIndex -= 1,
@@ -111,10 +127,8 @@ document.addEventListener('keydown', (event) => {
     steps += 1,
     oblicz += 1;
   }
-
   console.log('Liczba kroków: ' + steps)
   console.log('Oblicz? ' + oblicz)
-
   
 
 // Operacja na wartościach wewnątrz komórek
@@ -122,7 +136,6 @@ let currentCellValues = cells[currentCellIndex].textContent.split('-');
 let currentHP = parseInt(currentCellValues[0]);
 let currentDMG = parseInt(currentCellValues[1]);
 let currentMoney = parseInt(currentCellValues[2]);
-
 
 
 // Tu Można dodawac dowolne efekty z unikalnych kart ----------------------------------------------------------------------------------
@@ -155,6 +168,7 @@ else{
   oblicz = 0;
 }
 
+
 // Ogranicza życie do max jak przekroczysz
 if (highlightedHP > maxHP) {
   highlightedHP = maxHP;
@@ -162,10 +176,26 @@ if (highlightedHP > maxHP) {
 
 
 
-
-
-
 // To cuś robi że updatuje ci obecną komórkę na gracza i pokazuje jego wynik
 cells[currentCellIndex].classList.add('highlighted'); // Dodanie klasy 'highlighted' do aktualnej komórki
 cells[currentCellIndex].textContent = generateCellValue(highlightedHP, highlightedDMG, highlightedMoney);
+
+localStorage.setItem('highlightedMoney', highlightedMoney);
+console.log('Zapisano wartość do Local Storage:', highlightedMoney); // <-- sprawdza czy zapisano w pamieci ilosc aktualnych monet
+ // zapisywanie w pamieci  
+if(highlightedHP <= 0){  // <-- Sprawdzenie czy gracz nie przegrał
+  GameOver() 
+}
 });
+
+
+function GameOver() {
+  // Wyświetl powiadomienie o przegranej
+  //   alert('Przegrałeś!'); <--- to pokazuje alert o przegranej
+  // Zresetuj grę lub przekieruj na stronę startową
+  resetGame();
+}
+function resetGame() {
+  // Możesz dodać tutaj kod do zresetowania gry, np. przywrócenie punktów życia do początkowej wartości
+  window.location.href = '../End/end.html';
+}
