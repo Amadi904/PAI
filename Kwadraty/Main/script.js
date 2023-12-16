@@ -188,6 +188,26 @@ if (highlightedHP > maxHP) {
 cells[currentCellIndex].classList.add('highlighted'); // Dodanie klasy 'highlighted' do aktualnej komórki
 cells[currentCellIndex].textContent = generateCellValue(highlightedHP, highlightedDMG, highlightedMoney);
 
+// Wyświetlanie statystyk obok pola gry
+
+function updateStats() {
+  const hpValue = document.getElementById('hpValue');
+  const dmgValue = document.getElementById('dmgValue');
+  const moneyValue = document.getElementById('moneyValue');
+
+  const highlightedValues = cells[currentCellIndex].textContent.split('-');
+  const highlightedHP = parseInt(highlightedValues[0]);
+  const highlightedDMG = parseInt(highlightedValues[1]);
+  const highlightedMoney = parseInt(highlightedValues[2]);
+
+  hpValue.textContent = highlightedHP;
+  dmgValue.textContent = highlightedDMG;
+  moneyValue.textContent = highlightedMoney;
+  armorValue.textContent = armor;     // <---- do zmiany jak będzie aktywnie zmieniany
+}
+
+updateStats();
+
 
 localStorage.setItem('highlightedMoney', highlightedMoney);
 console.log('Zapisano wartość do Local Storage:', highlightedMoney); // <-- sprawdza czy zapisano w pamieci ilosc aktualnych monet
