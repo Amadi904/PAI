@@ -196,22 +196,22 @@ document.addEventListener('keydown', (event) => {
 
   // Warunki obsługujące ruch po siatce w zależności od naciśniętego klawisza
   if (
-    (event.key === 'a' || event.key === 'ArrowLeft') && currentCellIndex % 5 !== 0) {
+    (event.key === 'a' || event.key === 'ArrowLeft'|| event.key === 'A') && currentCellIndex % 5 !== 0) {
     currentCellIndex -= 1,
     steps += 1,
     oblicz += 1;
     checkStats();
-  } else if ((event.key === 'w' || event.key === 'ArrowUp') && currentCellIndex >= 5) {
+  } else if ((event.key === 'w' || event.key === 'ArrowUp'|| event.key === 'W') && currentCellIndex >= 5) {
     currentCellIndex -= 5,
     steps += 1,
     oblicz += 1;
     checkStats();
-  } else if ((event.key === 'd'  || event.key==='ArrowRight') && currentCellIndex % 5 !== 4) {
+  } else if ((event.key === 'd'  || event.key==='ArrowRight'|| event.key === 'D') && currentCellIndex % 5 !== 4) {
     currentCellIndex += 1,
     steps += 1,
     oblicz += 1;
     checkStats();
-  } else if ((event.key === 's' || event.key==='ArrowDown')  && currentCellIndex < 20) {
+  } else if ((event.key === 's' || event.key==='ArrowDown'|| event.key === 'S')  && currentCellIndex < 20) {
     currentCellIndex += 5,
     steps += 1,
     oblicz += 1;
@@ -221,7 +221,7 @@ document.addEventListener('keydown', (event) => {
       if (skill == 1)        {
         decreaseNeighbourHP();
       } else if (skill == 2) {
-
+        
       } else if (skill == 3) {
         
       }
@@ -294,7 +294,7 @@ function updateStats() {
   const highlightedDMG = parseInt(highlightedValues[1]);
   const highlightedMoney = parseInt(highlightedValues[2]);
 
-  hpValue.textContent = highlightedHP;
+  hpValue.textContent = initialHP + "/" + highlightedHP;
   dmgValue.textContent = highlightedDMG;
   moneyValue.textContent = highlightedMoney;
   armorValue.textContent = armor;     // <---- do zmiany jak będzie aktywnie zmieniany
