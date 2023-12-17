@@ -17,10 +17,55 @@ function decreaseNeighbourHP() {
         neighbourHP -= 15;
      }
     cells[neighbourIndex].textContent = generateCellValue(neighbourHP, parseInt(neighbourCellValues[1]), parseInt(neighbourCellValues[2]));
+    steps = 0;
   } else {
     console.log('FUCK U BITCH')
   }
 }}
+
+// Umiejka 2 -------------------------------------------------------------------------------------------------------------------------------
+let isExplodeWeakActive = false;
+
+function explodeWeak() {
+  isExplodeWeakActive = true;
+
+  cells.forEach((cell, index) => {
+    cell.addEventListener('click', () => {
+      if (isExplodeWeakActive) {
+
+        cells[currentCellIndex].classList.remove('highlighted');
+
+        const currentCellValue = cells[currentCellIndex].textContent;
+        const currentCellValues = currentCellValue.split('-');
+        const currentHP = parseInt(currentCellValues[0]);
+        const currentDMG = parseInt(currentCellValues[1]);
+        const currentMoney = parseInt(currentCellValues[2]);
+
+        const location = currentCellIndex;
+
+        currentCellIndex = index;
+        cells[currentCellIndex].classList.add('highlighted');
+
+        const clickedCellValue = cells[currentCellIndex].textContent;
+        const clickedCellValues = clickedCellValue.split('-');
+        const clickedHP = parseInt(clickedCellValues[0] - currentDMG);
+        const clickedDMG = parseInt(clickedCellValues[1]);
+        const clickedMoney = parseInt(clickedCellValues[2]);
+        
+        isExplodeWeakActive = false;
+
+        cells[currentCellIndex].textContent = generateCellValue(currentHP, currentDMG, currentMoney);
+
+        if (clickedHP>1) {
+          cells[location].textContent = generateCellValue(clickedHP, clickedDMG, clickedMoney);
+          steps = 0;
+        } else {
+          cells[location].textContent = generateCellValue(0, clickedDMG, clickedMoney);
+        }
+      }
+    });
+  });
+}
 
 
 
@@ -225,7 +270,6 @@ document.addEventListener('keydown', (event) => {
       } else if (skill == 3) {
         
       }
-      steps = 0;
   }
   console.log('Liczba kroków: ' + steps)
   console.log('Oblicz? ' + oblicz)
