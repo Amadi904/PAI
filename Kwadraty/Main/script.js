@@ -266,7 +266,7 @@ document.addEventListener('keydown', (event) => {
       if (skill == 1)        {
         decreaseNeighbourHP();
       } else if (skill == 2) {
-        
+        explodeWeak();
       } else if (skill == 3) {
         
       }
