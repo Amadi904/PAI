@@ -18,8 +18,6 @@ function decreaseNeighbourHP() {
      }
     cells[neighbourIndex].textContent = generateCellValue(neighbourHP, parseInt(neighbourCellValues[1]), parseInt(neighbourCellValues[2]));
     steps = 0;
-  } else {
-    console.log('FUCK U BITCH')
   }
 }}
 
@@ -67,8 +65,6 @@ function explodeWeak() {
   });
 }
 
-
-
 // Pobieramy Grid z style.css
 const grid = document.getElementById('grid');
 const cells = [];
@@ -80,6 +76,20 @@ function generateCellValue(hp, dmg, money) {
   return `${hp}-${dmg}-${money}`;
 }
 
+
+
+function postacglowna(){
+  if (skill==1){
+    cells[currentCellIndex].style.backgroundImage = 'none';
+    cells[currentCellIndex].style.backgroundImage = "url('postaci/postac1.png')";
+  } else if (skill==2){
+    cells[currentCellIndex].style.backgroundImage = 'none';
+    cells[currentCellIndex].style.backgroundImage = "url('postaci/postac2.png')";
+  } else if (skill==3){
+    cells[currentCellIndex].style.backgroundImage = 'none';
+    cells[currentCellIndex].style.backgroundImage = "url('postaci/postac3.png')";
+  }
+}
 
 
 // Inicjalizacja wartości początkowych
@@ -123,7 +133,7 @@ for (let i = 0; i < 5; i++) {
       cell.textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 4 + 2)
+        Math.floor(Math.random() * 3 + 2)
       );
     }
     grid.appendChild(cell);
@@ -137,54 +147,88 @@ let currentCellIndex = 12; // Inicjalizacja zmiennej przechowującej indeks bie�
 // Zmiana watości Życia i Ataku gdy mało komórka specjalna jest
 function checkStats() {
   cells.forEach((cell, index) => {
+
     // Sprawdzenie, czy komórka nie ma klasy "highlighted"
     if (!cell.classList.contains('highlighted')) {
       const cellValues = cell.textContent.split('-');
       let cellHP = parseInt(cellValues[0]);
       let cellDMG = parseInt(cellValues[1]);
       let cellMoney = parseInt(cellValues[2]);
-
+    
 
       // WAŻNE ----------------- WAŻNE - To pozwala manipulować wartościami HP-ATAK-MONEY istniejących komórek zależnie od czegokolwiek
-      if (cellMoney == 3 && cellHP == 0 && cellDMG == 0) {
+      // 1 - potka
+      // 2 - potka
+      if (cellMoney ==1 && cellHP == 0 && cellDMG == 0){
+        cell.style.backgroundImage = "url('enemy/enemy1.png";
+      } else if (cellMoney ==2 && cellHP == 0 && cellDMG == 0){
+        cell.style.backgroundImage = "url('enemy/enemy2.png";
+      } else if (cellMoney == 3 && cellHP == 0 && cellDMG == 0) { // 3 - Rabbit
         cellDMG = 4;
         cellHP = 8;
-      } else if (cellMoney == 4 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy3.png";
+      } else if (cellMoney == 4 && cellHP == 0 && cellDMG == 0) { // 4 - Butterfly
         cellDMG = 4;
         cellHP = 16;
-      } else if (cellMoney == 5 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy4.png";
+      } else if (cellMoney == 5 && cellHP == 0 && cellDMG == 0) { // 5 - Dog
         cellDMG = 3;
         cellHP = 14;
-      } else if (cellMoney == 6 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy5.png";
+
+      } else if (cellMoney == 6 && cellHP == 0 && cellDMG == 0) { // 6 - Cat
         cellDMG = 4;
         cellHP = 17;
-      } else if (cellMoney == 7 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy6.png";
+
+      } else if (cellMoney == 7 && cellHP == 0 && cellDMG == 0) { // 7 - Turtle
         cellDMG = 1;
         cellHP = 20;
-      } else if (cellMoney == 8 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy7.png";
+
+      } else if (cellMoney == 8 && cellHP == 0 && cellDMG == 0) { // 8 - Frog
         cellDMG = 8;
         cellHP = 11;
-      } else if (cellMoney == 9 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy8.png";
+
+      } else if (cellMoney == 9 && cellHP == 0 && cellDMG == 0) { // 9 - Bat
         cellDMG = 3;
         cellHP = 15;
-      } else if (cellMoney == 10 && cellHP == 0 && cellDMG == 0) {
+        cell.style.backgroundImage = "url('enemy/enemy9.png";
+
+      } else if (cellMoney == 10 && cellHP == 0 && cellDMG == 0) { // 10 - Jellyfish
         cellDMG = 4;
         cellHP = 20;
-      } else if (cellMoney == 11 && cellHP == 0 && cellDMG == 0) {
+        style.backgroundImage = "url('enemy/enemy10.png";
+
+      } else if (cellMoney == 11 && cellHP == 0 && cellDMG == 0) { // 11 - Eagle
         cellDMG = 10;
         cellHP = 41;
+        cell.style.backgroundImage = "url('enemy/enemy11.png";
+
+      } else if (cellMoney == 12 && cellHP == 0 && cellDMG == 0) { // 12 - Crocodile
+        cellDMG = 8;
+        cellHP = 51;
+        cell.style.backgroundImage = "url('enemy/enemy12.png";
+
+      } else if (cellMoney == 13 && cellHP == 0 && cellDMG == 0) { // 13 - Shark
+        cellDMG = 20;
+        cellHP = 60;
+        cell.style.backgroundImage = "url('enemy/enemy13.png";
+
       }
       cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
-
-
-
 
       // Tu unikalne efekty komórek
       if (cellMoney == 11 && cellHP >= 2){
         cellHP -=1;
         cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
       }
-    }
+
+      postacglowna();
+
+
+    } 
   });
 }
 checkStats();
@@ -193,14 +237,11 @@ checkStats();
 
 // Nasłuchiwanie na zdarzenie naciśnięcia klawisza
 document.addEventListener('keydown', (event) => {
-
-  
   // Pobranie wartości z komórki "highlighted" i zapisanie ich w zmiennych
   const highlightedValues = cells[currentCellIndex].textContent.split('-');
   let highlightedHP = parseInt(highlightedValues[0]);
   let highlightedDMG = parseInt(highlightedValues[1]);
   let highlightedMoney = parseInt(highlightedValues[2]);
-
   console.log('Wartości z komórki highlighted:', highlightedMoney);
 
 
@@ -209,25 +250,25 @@ document.addEventListener('keydown', (event) => {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 10 + 1)
+        Math.floor(Math.random() * 6 + 1)
       );
     } else if (highlightedMoney <= 200) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 15 + 1)
+        Math.floor(Math.random() * 8 + 1)
       );
     } else if (highlightedMoney <= 300) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 20 + 1)
+        Math.floor(Math.random() * 10 + 1)
       );
     } else if (highlightedMoney >= 301) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 20 + 6)
+        Math.floor(Math.random() * 11 + 2)
       );
     }
   
@@ -245,21 +286,25 @@ document.addEventListener('keydown', (event) => {
     currentCellIndex -= 1,
     steps += 1,
     oblicz += 1;
+
     checkStats();
   } else if ((event.key === 'w' || event.key === 'ArrowUp'|| event.key === 'W') && currentCellIndex >= 5) {
     currentCellIndex -= 5,
     steps += 1,
     oblicz += 1;
+
     checkStats();
   } else if ((event.key === 'd'  || event.key==='ArrowRight'|| event.key === 'D') && currentCellIndex % 5 !== 4) {
     currentCellIndex += 1,
     steps += 1,
     oblicz += 1;
+
     checkStats();
   } else if ((event.key === 's' || event.key==='ArrowDown'|| event.key === 'S')  && currentCellIndex < 20) {
     currentCellIndex += 5,
     steps += 1,
     oblicz += 1;
+
     checkStats();
   } // Umiejki dla postaci
     else if (event.key === 'r' && steps >= 1) {
@@ -268,7 +313,7 @@ document.addEventListener('keydown', (event) => {
       } else if (skill == 2) {
         explodeWeak();
       } else if (skill == 3) {
-        
+        vampirism();
       }
   }
   console.log('Liczba kroków: ' + steps)
@@ -286,6 +331,7 @@ let currentMoney = parseInt(currentCellValues[2]);
 
 // Tu Można dodawac dowolne efekty z unikalnych kart ----------------------------------------------------------------------------------
 if (oblicz>=1) {
+  postacglowna();
   if (currentMoney==1){
     highlightedHP +=1;
   } else if (currentMoney==2){
@@ -314,7 +360,7 @@ else{
 
 // Ogranicza życie do max jak przekroczysz
 if (highlightedHP > maxHP) {
-  highlightedHP = maxHP;
+  highlightedHP -= 1;
 }
 
 

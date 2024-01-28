@@ -2,10 +2,42 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh;  
   margin: 0;
-  background-color: #ffffff;
+  background-image: url('background1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
   font-family: 'Arial', sans-serif;
+}
+
+ h3#some-text {
+    position: absolute;
+    top: 0;
+    left: 30%;
+    transform: translateX(-50%);
+    padding: 5px;
+    box-shadow: 5px -1px 41px -2px rgba(191,77,48,1);
+    animation: pulsate 2s infinite; /* Dodana animacja */
+  white-space: nowrap;
+  font-size: 20px;
+  margin-bottom: 10px;
+  margin-right: 10;
+  display: none;
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(1) translateX(0); /* Bez przesunięcia na początku */
+    font-size: 25px;
+  }
+  50% {
+    transform: scale(1.2) translateX(-10px); /* Przesunięcie w lewo o 20 pikseli w połowie animacji */
+    font-size: 35px;
+  }
+  100% {
+    transform: scale(1) translateX(0); /* Powrót do początkowego położenia */
+    font-size: 25px;
+  }
 }
 
 .container {
@@ -22,15 +54,25 @@ body {
 .cell {
   width: 100px;
   height: 100px;
-  border: 1px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
+  border: 3px solid red;
+  display:flex ;
+  align-items: top;
+  justify-content: top;
+  font-size: 17px;
+  overflow: hidden;
+  background-position: center;
+  background-size:cover;
+  color: blue;
+  
 }
 
+
+
 .highlighted {
-  background-color: yellow;
+
+  font-size: larger;
+  color: red;
+  /* background-image: url(Postaci/postac1.png) !important; */
 }
 
 .stats {
@@ -45,3 +87,7 @@ body {
 .stats div {
   margin-bottom: 8px;
 }
+
+
+
+
