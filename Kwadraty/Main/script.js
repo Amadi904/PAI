@@ -182,8 +182,8 @@ function checkStats() {
         cell.style.backgroundImage = "url('enemy/enemy6.png";
 
       } else if (cellMoney == 7 && cellHP == 0 && cellDMG == 0) { // 7 - Turtle
-        cellDMG = 1;
-        cellHP = 20;
+        cellDMG = 6;
+        cellHP = 40;
         cell.style.backgroundImage = "url('enemy/enemy7.png";
 
       } else if (cellMoney == 8 && cellHP == 0 && cellDMG == 0) { // 8 - Frog
@@ -197,8 +197,8 @@ function checkStats() {
         cell.style.backgroundImage = "url('enemy/enemy9.png";
 
       } else if (cellMoney == 10 && cellHP == 0 && cellDMG == 0) { // 10 - Jellyfish
-        cellDMG = 4;
-        cellHP = 20;
+        cellDMG = 8;
+        cellHP = 5;
         style.backgroundImage = "url('enemy/enemy10.png";
 
       } else if (cellMoney == 11 && cellHP == 0 && cellDMG == 0) { // 11 - Eagle
@@ -220,8 +220,12 @@ function checkStats() {
       cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
 
       // Tu unikalne efekty komórek
-      if (cellMoney == 11 && cellHP >= 2){
+      if (cellMoney == 7 && cellHP >= 2){
         cellHP -=1;
+        cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
+      }
+      if (cellMoney == 10 && cellHP <= 99){
+        cellHP +=1;
         cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
       }
 
@@ -313,7 +317,6 @@ document.addEventListener('keydown', (event) => {
       } else if (skill == 2) {
         explodeWeak();
       } else if (skill == 3) {
-        vampirism();
       }
   }
   console.log('Liczba kroków: ' + steps)
