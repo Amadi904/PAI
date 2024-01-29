@@ -1,6 +1,15 @@
 // Zmienna do przechowywania informacji o ostatnio wybranym obrazku
 let ostatniWybranyObrazek = null;
 
+
+function showText(text) {
+  // Znajdź element o id "output"
+  var outputElement = document.getElementById('opis');
+  outputElement.innerHTML = text;
+}
+
+
+
 // Funkcja obsługująca kliknięcie na obrazek
 function selectImage(imageNumber) {
   // Jeżeli obecny obrazek jest już zaznaczony, przerwij wykonanie funkcji
@@ -17,7 +26,7 @@ function selectImage(imageNumber) {
   // Zaznaczamy nowo wybrany obrazek
   ostatniWybranyObrazek = imageNumber;
   const obrazek = document.getElementById(`postac${imageNumber}`);
-  obrazek.style.border = '2px solid red';
+  obrazek.style.border = '2px solid #244E52';
   obrazek.style.transform = 'scale(1.1)';
 
   console.log('Aktualnie wybrany obraz:', ostatniWybranyObrazek);
@@ -26,14 +35,17 @@ function selectImage(imageNumber) {
 
 // Dodanie event listenerów do obrazków
 document.getElementById('postac1').addEventListener('click', function() {
+  showText('Opis postaci 1');
   selectImage(1);
 });
 
 document.getElementById('postac2').addEventListener('click', function() {
+  showText('Opis postaci 2');
   selectImage(2);
 });
 
 document.getElementById('postac3').addEventListener('click', function() {
+  showText('Opis postaci 3');
   selectImage(3);
 });
 
