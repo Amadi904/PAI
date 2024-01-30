@@ -19,6 +19,7 @@ function decreaseNeighbourHP() {
     cells[neighbourIndex].textContent = generateCellValue(neighbourHP, parseInt(neighbourCellValues[1]), parseInt(neighbourCellValues[2]));
     steps = 0;
   }
+  checkStats();
 }}
 
 // Umiejka 2 -------------------------------------------------------------------------------------------------------------------------------
@@ -60,10 +61,47 @@ function explodeWeak() {
         } else {
           cells[location].textContent = generateCellValue(0, clickedDMG, clickedMoney);
         }
+        checkStats();
       }
     });
   });
 }
+
+
+// Umiejka 3 ----------------------------------------------------------------------------------------------------------------------------
+function consumeEnemy() {
+  isExplodeWeakActive = true;
+
+  cells.forEach((cell, index) => {
+    cell.addEventListener('click', () => {
+      if (isExplodeWeakActive) {
+
+        const currentCellValue = cells[currentCellIndex].textContent;
+        const currentCellValues = currentCellValue.split('-');
+        const currentHP = parseInt(currentCellValues[0]);
+        const currentDMG = parseInt(currentCellValues[1]);
+        const currentMoney = parseInt(currentCellValues[2]);
+
+        const clickedCellValue = cells[index].textContent;
+        const clickedCellValues = clickedCellValue.split('-');
+        const clickedHP = parseInt(clickedCellValues[0] - currentDMG);
+        const clickedDMG = parseInt(clickedCellValues[1]);
+        const clickedMoney = parseInt(clickedCellValues[2]);
+        
+        isExplodeWeakActive = false;
+
+        cells[index].textContent = generateCellValue(0, clickedDMG, clickedMoney);
+
+        currentHP +=clickedHP;
+        cells[currentCellIndex].textContent = generateCellValue(currentHP, currentDMG, currentMoney);
+
+        checkStats();
+      }
+    });
+  });
+
+}
+
 
 // Pobieramy Grid z style.css
 const grid = document.getElementById('grid');
@@ -175,48 +213,73 @@ function checkStats() {
         cellDMG = 3;
         cellHP = 14;
         cell.style.backgroundImage = "url('enemy/enemy5.png";
-
       } else if (cellMoney == 6 && cellHP == 0 && cellDMG == 0) { // 6 - Cat
         cellDMG = 4;
         cellHP = 17;
         cell.style.backgroundImage = "url('enemy/enemy6.png";
-
       } else if (cellMoney == 7 && cellHP == 0 && cellDMG == 0) { // 7 - Turtle
         cellDMG = 6;
         cellHP = 40;
         cell.style.backgroundImage = "url('enemy/enemy7.png";
-
       } else if (cellMoney == 8 && cellHP == 0 && cellDMG == 0) { // 8 - Frog
         cellDMG = 8;
         cellHP = 11;
         cell.style.backgroundImage = "url('enemy/enemy8.png";
-
       } else if (cellMoney == 9 && cellHP == 0 && cellDMG == 0) { // 9 - Bat
         cellDMG = 3;
         cellHP = 15;
         cell.style.backgroundImage = "url('enemy/enemy9.png";
-
       } else if (cellMoney == 10 && cellHP == 0 && cellDMG == 0) { // 10 - Jellyfish
         cellDMG = 8;
         cellHP = 5;
         style.backgroundImage = "url('enemy/enemy10.png";
-
       } else if (cellMoney == 11 && cellHP == 0 && cellDMG == 0) { // 11 - Eagle
         cellDMG = 10;
         cellHP = 41;
         cell.style.backgroundImage = "url('enemy/enemy11.png";
-
       } else if (cellMoney == 12 && cellHP == 0 && cellDMG == 0) { // 12 - Crocodile
         cellDMG = 8;
         cellHP = 51;
         cell.style.backgroundImage = "url('enemy/enemy12.png";
-
       } else if (cellMoney == 13 && cellHP == 0 && cellDMG == 0) { // 13 - Shark
         cellDMG = 20;
         cellHP = 60;
         cell.style.backgroundImage = "url('enemy/enemy13.png";
-
       }
+
+
+       else if (cellMoney == 3 && cellHP >= 1) { // 3 - Rabbit
+        cell.style.backgroundImage = "url('enemy/enemy3.png";
+      }else if (cellMoney == 4 && cellHP >= 1) { // 4 - Butterfly
+        cell.style.backgroundImage = "url('enemy/enemy4.png";
+      } else if (cellMoney == 5 && cellHP >= 1) { // 5 - Dog
+        cell.style.backgroundImage = "url('enemy/enemy5.png";
+      } else if (cellMoney == 6 && cellHP >= 1) { // 6 - Cat
+        cell.style.backgroundImage = "url('enemy/enemy6.png";
+      } else if (cellMoney == 7 && cellHP >= 1) { // 7 - Turtle
+        cell.style.backgroundImage = "url('enemy/enemy7.png";
+      } else if (cellMoney == 8 && cellHP >= 1) { // 8 - Frog
+        cell.style.backgroundImage = "url('enemy/enemy8.png";
+      } else if (cellMoney == 9 && cellHP >= 1) { // 9 - Bat
+        cell.style.backgroundImage = "url('enemy/enemy9.png";
+      } else if (cellMoney == 10 && cellHP >= 1) { // 10 - Jellyfish
+        style.backgroundImage = "url('enemy/enemy10.png";
+      } else if (cellMoney == 11 && cellHP >= 1) { // 11 - Eagle
+        cell.style.backgroundImage = "url('enemy/enemy11.png";
+      } else if (cellMoney == 12 && cellHP >= 1) { // 12 - Crocodile
+        cell.style.backgroundImage = "url('enemy/enemy12.png";
+      } else if (cellMoney == 13 && cellHP >= 1) { // 13 - Shark
+        cell.style.backgroundImage = "url('enemy/enemy13.png";
+      } else if (cellMoney >= 3 && cellHP == 0) { // 0 ------ DEAD
+        cell.style.backgroundImage = "url('enemy/enemy0.png";
+      }
+
+
+
+
+
+
+
       cell.textContent = generateCellValue(cellHP, cellDMG, parseInt(cellValues[2]));
 
       // Tu unikalne efekty komórek
@@ -317,6 +380,7 @@ document.addEventListener('keydown', (event) => {
       } else if (skill == 2) {
         explodeWeak();
       } else if (skill == 3) {
+        consumeEnemy();
       }
   }
   console.log('Liczba kroków: ' + steps)
@@ -417,3 +481,4 @@ function resetGame() {
   // Możesz dodać tutaj kod do zresetowania gry, np. przywrócenie punktów życia do początkowej wartości
   window.location.href = '../End/end.html';
 }
+checkStats();

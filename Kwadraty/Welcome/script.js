@@ -35,17 +35,17 @@ function selectImage(imageNumber) {
 
 // Dodanie event listenerów do obrazków
 document.getElementById('postac1').addEventListener('click', function() {
-  showText('Opis postaci 1');
+  showText('FENIKS<br>Użycie umiejętności przetnie wszytkich przeciwników w rzędzie w którym się znajdujesz');
   selectImage(1);
 });
 
 document.getElementById('postac2').addEventListener('click', function() {
-  showText('Opis postaci 2');
+  showText('JEDNOROŻEC<br>Użycie umiejętności zamieni cię miejscem z wybranym przeciwnikiem i zaatakuje go, jeśli zabijesz możesz użyć jeszcze raz');
   selectImage(2);
 });
 
 document.getElementById('postac3').addEventListener('click', function() {
-  showText('Opis postaci 3');
+  showText('SMOK<br>placeholder placeholder placeholder placeholder');
   selectImage(3);
 });
 
