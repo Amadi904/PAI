@@ -92,14 +92,14 @@ function consumeEnemy() {
 
         cells[index].textContent = generateCellValue(0, clickedDMG, clickedMoney);
 
-        currentHP +=clickedHP;
-        cells[currentCellIndex].textContent = generateCellValue(currentHP, currentDMG, currentMoney);
+        let zycie = currentHP + clickedHP;
+        cells[currentCellIndex].textContent = generateCellValue(zycie, currentDMG, currentMoney);
 
         checkStats();
+        steps = 0;
       }
     });
   });
-
 }
 
 
@@ -374,7 +374,7 @@ document.addEventListener('keydown', (event) => {
 
     checkStats();
   } // Umiejki dla postaci
-    else if (event.key === 'r' && steps >= 1) {
+    else if (event.key === 'r' && steps >= 10) {
       if (skill == 1)        {
         decreaseNeighbourHP();
       } else if (skill == 2) {
