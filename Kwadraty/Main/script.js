@@ -93,10 +93,14 @@ function consumeEnemy() {
         cells[index].textContent = generateCellValue(0, clickedDMG, clickedMoney);
 
         let zycie = currentHP + clickedHP;
+        if (zycie >= maxHP) {
+          zycie = maxHP;
+        }
         cells[currentCellIndex].textContent = generateCellValue(zycie, currentDMG, currentMoney);
 
         checkStats();
         steps = 0;
+        
       }
     });
   });
@@ -427,7 +431,7 @@ else{
 
 // Ogranicza życie do max jak przekroczysz
 if (highlightedHP > maxHP) {
-  highlightedHP -= 1;
+  highlightedHP = maxHP;
 }
 
 

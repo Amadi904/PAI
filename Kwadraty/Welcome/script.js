@@ -35,17 +35,17 @@ function selectImage(imageNumber) {
 
 // Dodanie event listenerów do obrazków
 document.getElementById('postac1').addEventListener('click', function() {
-  showText('FENIKS<br>Użycie umiejętności przetnie wszytkich przeciwników w rzędzie w którym się znajdujesz');
+  showText('PHOENIX<br>Using spell wil attack everyone that shares row with you');
   selectImage(1);
 });
 
 document.getElementById('postac2').addEventListener('click', function() {
-  showText('JEDNOROŻEC<br>Użycie umiejętności zamieni cię miejscem z wybranym przeciwnikiem i zaatakuje go, jeśli zabijesz możesz użyć jeszcze raz');
+  showText('UNICORN<br>Using Skill will swap you witch chosen enemy and attack him. If you kill this way skill resets');
   selectImage(2);
 });
 
 document.getElementById('postac3').addEventListener('click', function() {
-  showText('SMOK<br>placeholder placeholder placeholder placeholder');
+  showText('DRAGON<br>Using skill will instantly kill any enemy and heal you for his amount of HP');
   selectImage(3);
 });
 
