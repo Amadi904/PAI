@@ -107,6 +107,45 @@ function consumeEnemy() {
 }
 
 
+// Pasywka phoenixa -----------------------------------------------------------------------------------------------
+function burn() {
+  const upIndex = currentCellIndex - 5;
+  const downIndex = currentCellIndex + 5;
+
+  if (upIndex >= 0) {
+    const upCellValues = cells[upIndex].textContent.split('-');
+    let upHP = parseInt(upCellValues[0]);
+    const upDMG = parseInt(upCellValues[1]);
+    const upMoney = parseInt(upCellValues[2]);
+
+    if (upHP > 1) {
+      upHP -= 2;
+    } else {
+      upHP = 0;
+    }
+
+    cells[upIndex].textContent = generateCellValue(upHP, upDMG, upMoney);
+  }
+
+  if (downIndex < cells.length) {
+    const downCellValues = cells[downIndex].textContent.split('-');
+    let downHP = parseInt(downCellValues[0]);
+    const downDMG = parseInt(downCellValues[1]);
+    const downMoney = parseInt(downCellValues[2]);
+
+    if (downHP > 1) {
+      downHP -= 2;
+    } else {
+      downHP = 0;
+    }
+
+    cells[downIndex].textContent = generateCellValue(downHP, downDMG, downMoney);
+  }
+
+  checkStats();
+}
+
+
 // Pobieramy Grid z style.css
 const grid = document.getElementById('grid');
 const cells = [];
@@ -137,7 +176,7 @@ function postacglowna(){
 // Inicjalizacja wartości początkowych
 let maxHP = 20;
 let initialHP = 20;
-let initialDMG = 10;
+let initialDMG = 0;
 let initialMoney = 0;
 let steps = 0;
 let oblicz = 0;
@@ -151,7 +190,6 @@ if (skill == 1)        {
   maxHP = 10;
   initialHP = 10;
   initialDMG = 12;
-  armor = 1;
 } else if (skill == 3) {
   maxHP = 12;
   initialHP = 12;
@@ -234,16 +272,16 @@ function checkStats() {
         cellHP = 15;
         cell.style.backgroundImage = "url('enemy/enemy9.png";
       } else if (cellMoney == 10 && cellHP == 0 && cellDMG == 0) { // 10 - Jellyfish
-        cellDMG = 8;
-        cellHP = 5;
-        style.backgroundImage = "url('enemy/enemy10.png";
+        cellDMG = 20;
+        cellHP = 8;
+        cell.style.backgroundImage = "url('enemy/enemy10.png')";
       } else if (cellMoney == 11 && cellHP == 0 && cellDMG == 0) { // 11 - Eagle
-        cellDMG = 10;
-        cellHP = 41;
+        cellDMG = 3;
+        cellHP = 13;
         cell.style.backgroundImage = "url('enemy/enemy11.png";
       } else if (cellMoney == 12 && cellHP == 0 && cellDMG == 0) { // 12 - Crocodile
-        cellDMG = 8;
-        cellHP = 51;
+        cellDMG = 2;
+        cellHP = 30;
         cell.style.backgroundImage = "url('enemy/enemy12.png";
       } else if (cellMoney == 13 && cellHP == 0 && cellDMG == 0) { // 13 - Shark
         cellDMG = 20;
@@ -267,7 +305,7 @@ function checkStats() {
       } else if (cellMoney == 9 && cellHP >= 1) { // 9 - Bat
         cell.style.backgroundImage = "url('enemy/enemy9.png";
       } else if (cellMoney == 10 && cellHP >= 1) { // 10 - Jellyfish
-        style.backgroundImage = "url('enemy/enemy10.png";
+        cell.style.backgroundImage = "url('enemy/enemy10.png')";
       } else if (cellMoney == 11 && cellHP >= 1) { // 11 - Eagle
         cell.style.backgroundImage = "url('enemy/enemy11.png";
       } else if (cellMoney == 12 && cellHP >= 1) { // 12 - Crocodile
@@ -317,29 +355,29 @@ document.addEventListener('keydown', (event) => {
 
 
     // To zmioenia poprzednio okupowaną komórke na losową
-    if (highlightedMoney <= 100)        {
+    if (highlightedMoney <= 50)        {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
         Math.floor(Math.random() * 6 + 1)
       );
-    } else if (highlightedMoney <= 200) {
+    } else if (highlightedMoney <= 100) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
         Math.floor(Math.random() * 8 + 1)
       );
-    } else if (highlightedMoney <= 300) {
+    } else if (highlightedMoney <= 150) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
         Math.floor(Math.random() * 10 + 1)
       );
-    } else if (highlightedMoney >= 301) {
+    } else if (highlightedMoney >= 201) {
       cells[currentCellIndex].textContent = generateCellValue(
         Math.floor(0),
         Math.floor(0),
-        Math.floor(Math.random() * 11 + 2)
+        Math.floor(Math.random() * 12 + 2)
       );
     }
   
@@ -402,7 +440,16 @@ let currentMoney = parseInt(currentCellValues[2]);
 
 // Tu Można dodawac dowolne efekty z unikalnych kart ----------------------------------------------------------------------------------
 if (oblicz>=1) {
+  if (skill == 1){
+    burn();
+  }
+
   postacglowna();
+  if (skill==2) {
+    if (currentMoney<=2){
+      highlightedHP = initialHP;
+    }
+  }
   if (currentMoney==1){
     highlightedHP +=1;
   } else if (currentMoney==2){
@@ -433,9 +480,6 @@ else{
 if (highlightedHP > maxHP) {
   highlightedHP = maxHP;
 }
-
-
-
 
 
 
@@ -485,4 +529,3 @@ function resetGame() {
   // Możesz dodać tutaj kod do zresetowania gry, np. przywrócenie punktów życia do początkowej wartości
   window.location.href = '../End/end.html';
 }
-checkStats();
